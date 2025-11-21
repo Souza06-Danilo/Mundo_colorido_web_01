@@ -1,203 +1,324 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#87CEEB" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="description" content="Mundo Colorido - App de comunicação e emoções para autismo" />
-    
-    <title>Mundo Colorido</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json" />
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4150/4150367.png" />
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/4150/4150367.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Comunicar Emoções — Aprender a Expressar Sentimentos</title>
+  <meta name="description" content="Site simples e acessível para ajudar pessoas autistas a comunicar suas emoções." />
+  <!-- Manifest (salvar como manifest.json no mesmo diretório) -->
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root{
+      --bg:#f7fbff; --card:#ffffff; --accent:#2b7cff; --muted:#6b7280;
+      --success:#10b981; --danger:#ef4444; --radius:16px; --gap:14px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%; margin:0; background:var(--bg); color:#0f172a}
+    .app{max-width:900px; margin:20px auto; padding:18px;}
+    header{display:flex; align-items:center; gap:12px}
+    h1{font-size:1.6rem; margin:0}
+    p.lead{margin:6px 0 18px; color:var(--muted)}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Lilita+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #87CEEB; /* Sky blue fallback */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='skyGradient' x1='0.5' y1='0' x2='0.5' y2='1'%3E%3Cstop offset='0%25' stop-color='%2387CEEB' /%3E%3Cstop offset='100%25' stop-color='%23B0E0E6' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1920' height='1080' fill='url(%23skyGradient)' /%3E%3Ccircle cx='1750' cy='170' r='120' fill='%23FFD700' opacity='0.9'/%3E%3Cg opacity='0.9'%3E%3Ccircle cx='500' cy='250' r='80' fill='white'/%3E%3Ccircle cx='590' cy='280' r='90' fill='white'/%3E%3Ccircle cx='410' cy='280' r='70' fill='white'/%3E%3Ccircle cx='1200' cy='350' r='100' fill='white'/%3E%3Ccircle cx='1300' cy='380' r='110' fill='white'/%3E%3Ccircle cx='1100' cy='380' r='90' fill='white'/%3E%3Ccircle cx='1600' cy='230' r='60' fill='white'/%3E%3Ccircle cx='1660' cy='250' r='70' fill='white'/%3E%3C/g%3E%3Cpath d='M-10 1080 L-10 800 Q 480 600, 960 850 T 1930 750 L 1930 1080 Z' fill='%2398FB98' /%3E%3Cpath d='M-10 1080 L-10 900 Q 320 750, 640 920 T 1280 850 T 1930 950 L 1930 1080 Z' fill='%233CB371' /%3E%3C/svg%3E");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            overscroll-behavior: none; /* Prevents pull-to-refresh on mobile */
-        }
-        .font-lilita { font-family: 'Lilita One', cursive; }
-        .title-stroked {
-            -webkit-text-stroke: 4px #4A4A4A;
-            text-shadow: 6px 6px 0px rgba(0,0,0,0.15);
-        }
-        .subtitle-stroked {
-            -webkit-text-stroke: 2px #4A4A4A;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-        }
-        @media (min-width: 768px) {
-            .title-stroked {
-                -webkit-text-stroke: 6px #4A4A4A;
-            }
-        }
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px}
+    .card{background:var(--card); border-radius:var(--radius); padding:12px; box-shadow:0 6px 18px rgba(11,20,50,0.06); display:flex; flex-direction:column; gap:10px; align-items:center}
+    .emotion-btn{width:100%; padding:12px; border-radius:12px; border:2px solid transparent; font-size:1rem; display:flex; gap:10px; align-items:center; justify-content:center; cursor:pointer}
+    .emotion-emoji{font-size:1.6rem}
+    .controls{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{padding:10px 14px; border-radius:10px; background:var(--accent); color:#fff; border:0; cursor:pointer}
+    .btn.secondary{background:transparent; border:1px solid #cbd5e1; color:var(--muted)}
+    .small{font-size:0.9rem; padding:8px 10px}
 
-        @keyframes jiggle {
-          0%, 100% { transform: rotate(-2deg); }
-          50% { transform: rotate(2deg); }
-        }
-        .jiggle-hover:hover { animation: jiggle 0.4s ease-in-out infinite; }
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100%) rotateZ(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
-        }
-        .confetti {
-            position: absolute; width: 12px; height: 12px;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: confetti-fall 3s linear infinite;
-        }
-        @keyframes pop {
-            0% { transform: scale(0.9); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
-        }
-        .animate-pop { animation: pop 0.3s ease-out; }
-        @keyframes pop-in {
-            0% { transform: scale(0.8); opacity: 0; }
-            80% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); }
-        }
-        .animate-pop-in { animation: pop-in 0.4s ease-out forwards; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); }
-        }
-        .animate-shake { animation: shake 0.4s ease-in-out; }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); }
-            50% { transform: scale(1.03); box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0); }
-        }
-        .animate-pulse-quick { animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes tada {
-            from { transform: scale3d(1, 1, 1); }
-            10%, 20% { transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -3deg); }
-            30%, 50%, 70%, 90% { transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 3deg); }
-            40%, 60%, 80% { transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -3deg); }
-            to { transform: scale3d(1, 1, 1); }
-        }
-        .animate-tada { animation: tada 1s; }
-        @keyframes fly-out {
-            to { transform: translateY(-150%) rotate(15deg); opacity: 0; }
-        }
-        .animate-fly-out { animation: fly-out 0.5s ease-in forwards; }
-        
-        .speaking .sound-wave > div:nth-child(1) { animation-name: wave-1; }
-        .speaking .sound-wave > div:nth-child(2) { animation-name: wave-2; }
-        .speaking .sound-wave > div:nth-child(3) { animation-name: wave-3; }
+    form{display:flex; gap:8px; width:100%}
+    input[type=text]{flex:1; padding:10px; border-radius:10px; border:1px solid #e2e8f0}
 
-        .sound-wave { display: flex; align-items: flex-end; gap: 4px; height: 24px; }
-        .sound-wave > div {
-            background-color: white;
-            width: 4px;
-            border-radius: 2px;
-            animation-duration: 0.8s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
-        @keyframes wave-1 { 0%, 100% { height: 6px; } 50% { height: 20px; } }
-        @keyframes wave-2 { 0%, 100% { height: 12px; } 50% { height: 24px; } }
-        @keyframes wave-3 { 0%, 100% { height: 8px; } 50% { height: 18px; } }
-        
-        @keyframes slideInFromLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .animate-slideInFromLeft { animation: slideInFromLeft 0.6s ease-out forwards; }
-        @keyframes slideInFromRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .animate-slideInFromRight { animation: slideInFromRight 0.6s ease-out forwards; }
-        
-        @keyframes sparkle {
-            0% { transform: scale(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: scale(1.5) rotate(90deg); opacity: 0; }
-        }
-        .sparkle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #FFD700;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: sparkle 0.8s ease-out forwards;
-        }
+    .history{max-height:220px; overflow:auto; padding:8px; width:100%; border-radius:12px; background:#f1f5f9}
+    .item{padding:8px; border-radius:10px; display:flex; justify-content:space-between; gap:8px}
+    .item .meta{color:var(--muted); font-size:0.9rem}
+    footer{margin-top:18px; color:var(--muted); font-size:0.85rem}
 
-        .perspective-container {
-            perspective: 800px;
-        }
-        .btn-3d {
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-        .btn-3d::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0));
-            border-radius: 1rem; /* same as rounded-2xl */
-            transform: translateZ(25px);
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-            opacity: 0;
-        }
-        .perspective-container:hover .btn-3d {
-            transform: rotateY(-15deg) rotateX(15deg) scale(1.05);
-            box-shadow: 10px 15px 30px rgba(0,0,0,0.2);
-        }
-        .perspective-container:hover .btn-3d::before {
-            opacity: 1;
-        }
-        .btn-3d-icon, .btn-3d-text {
-            transform: translateZ(50px);
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            will-change: transform;
-        }
-        .btn-3d:active {
-            transform: rotateY(0) rotateX(0) scale(0.95);
-            transition: transform 0.2s ease;
-        }
-        
-        /* Loading Spinner */
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #87CEEB; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        .loader {
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 60px; height: 60px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+    /* Focus visible for keyboard users */
+    :focus{outline:3px solid rgba(43,124,255,0.15); outline-offset:2px}
 
+    @media (max-width:420px){ h1{font-size:1.2rem} }
+  </style>
+</head>
+<body>
+  <main class="app" role="main">
+    <header>
+      <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="0" y="0" width="24" height="24" rx="6" fill="#2b7cff" />
+        <path d="M7 12h10M7 16h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h1>Comunicar Emoções</h1>
+        <p class="lead">Ajude-se a identificar e falar sobre emoções — simples, visual e seguro.</p>
+      </div>
+    </header>
+
+    <!-- Emotions grid -->
+    <section aria-labelledby="title-emotions">
+      <h2 id="title-emotions" style="font-size:1rem;margin:12px 0 6px">Escolha uma emoção</h2>
+      <div class="grid" id="emotionsGrid" aria-live="polite">
+        <!-- botões gerados por JS -->
+      </div>
+    </section>
+
+    <!-- Compose sentence + controls -->
+    <section style="margin-top:12px">
+      <div class="card">
+        <div style="width:100%">
+          <label for="reason" class="small">Por que você está sentindo isso? (opcional)</label>
+          <input id="reason" type="text" placeholder="Ex.: Estava muito barulho na sala" aria-label="Motivo" />
+        </div>
+        <div class="controls" style="width:100%">
+          <button class="btn" id="speakBtn">Falar em voz alta</button>
+          <button class="btn secondary small" id="saveBtn">Salvar</button>
+          <button class="btn secondary small" id="exportBtn">Exportar</button>
+        </div>
+        <div style="width:100%; margin-top:8px">
+          <strong>Frase gerada</strong>
+          <div id="generated" style="padding:10px; border-radius:8px; background:#f8fafc; margin-top:6px; min-height:44px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section style="margin-top:14px">
+      <h3 style="margin:6px 0">Histórico</h3>
+      <div class="history" id="history" aria-live="polite">
+        <!-- histórico salvo -->
+      </div>
+    </section>
+
+    <!-- Add custom emotion -->
+    <section style="margin-top:14px">
+      <h3 style="margin:6px 0">Adicionar emoção</h3>
+      <form id="addForm">
+        <input id="newEmoji" type="text" maxlength="2" placeholder="Emoji (ex: 😊)" aria-label="Emoji" required />
+        <input id="newLabel" type="text" placeholder="Nome da emoção (ex: feliz)" aria-label="Nome da emoção" required />
+        <button class="btn small" type="submit">Adicionar</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>Design pensado para clareza: botões grandes, contraste e textos curtos. Não substitui apoio profissional.</p>
+    </footer>
+  </main>
+
+  <script>
+    // --- Dados iniciais de emoções ---
+    const defaultEmotions = [
+      {emoji: '😊', label:'Feliz'},
+      {emoji: '😢', label:'Triste'},
+      {emoji: '😠', label:'Bravo'},
+      {emoji: '😰', label:'Ansioso'},
+      {emoji: '😐', label:'Neutro'},
+      {emoji: '😮', label:'Surpreso'},
+      {emoji: '😴', label:'Cansado'},
+      {emoji: '😇', label:'Calmo'}
+    ];
+
+    // --- Estado ---
+    let emotions = load('emotions') || defaultEmotions;
+    let selected = null;
+    let history = load('history') || [];
+
+    const grid = document.getElementById('emotionsGrid');
+    const generated = document.getElementById('generated');
+    const historyEl = document.getElementById('history');
+    const reasonInput = document.getElementById('reason');
+
+    function save(key, value){ localStorage.setItem('comunicar:'+key, JSON.stringify(value)); }
+    function load(key){ try{ return JSON.parse(localStorage.getItem('comunicar:'+key)); }catch(e){return null} }
+
+    // Render emotion buttons
+    function renderEmotions(){
+      grid.innerHTML='';
+      emotions.forEach((e,idx)=>{
+        const card = document.createElement('div'); card.className='card';
+        const btn = document.createElement('button'); btn.className='emotion-btn';
+        btn.setAttribute('aria-pressed','false'); btn.setAttribute('data-idx',idx);
+        btn.innerHTML = `<span class="emotion-emoji">${e.emoji}</span> <span style="font-weight:600">${e.label}</span>`;
+        btn.addEventListener('click',()=>selectEmotion(idx));
+        btn.addEventListener('keydown',(ev)=>{ if(ev.key==='Enter' || ev.key===' ') { ev.preventDefault(); selectEmotion(idx);} });
+        card.appendChild(btn);
+        grid.appendChild(card);
+      });
+    }
+
+    function selectEmotion(idx){
+      selected = emotions[idx];
+      // mark pressed
+      document.querySelectorAll('.emotion-btn').forEach((b,i)=>{
+        b.setAttribute('aria-pressed', i===idx ? 'true':'false');
+      });
+      updateGenerated();
+      // announce via speech (gentle)
+      speak(`Selecionado ${selected.label}`);
+    }
+
+    function updateGenerated(){
+      const reason = reasonInput.value.trim();
+      if(!selected){ generated.textContent = 'Escolha uma emoção acima.'; return; }
+      const sentence = reason ? `Estou me sentindo ${selected.label} ${selected.emoji} porque ${reason}.` : `Estou me sentindo ${selected.label} ${selected.emoji}.`;
+      generated.textContent = sentence;
+    }
+
+    // Speech synthesis (simple, user-configurable volumes are not exposed for safety)
+    function speak(text){
+      if(!window.speechSynthesis) return;
+      const ut = new SpeechSynthesisUtterance(text);
+      ut.lang = 'pt-BR';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(ut);
+    }
+
+    // Save to history
+    function saveEntry(){
+      if(!selected) return alert('Escolha uma emoção antes de salvar.');
+      const reason = reasonInput.value.trim();
+      const entry = {emoji:selected.emoji, label:selected.label, reason, time: new Date().toISOString()};
+      history.unshift(entry);
+      history = history.slice(0,200); // limitar
+      save('history', history);
+      renderHistory();
+      // feedback
+      speak(`Registro salvo: ${entry.label}`);
+    }
+
+    function renderHistory(){
+      historyEl.innerHTML='';
+      if(history.length===0){ historyEl.textContent='Nenhum registro salvo ainda.'; return; }
+      history.forEach((h, i)=>{
+        const div = document.createElement('div'); div.className='item';
+        const left = document.createElement('div');
+        left.innerHTML = `<div style="font-weight:600">${h.emoji} ${h.label}</div><div class="meta">${h.reason || ''}</div>`;
+        const right = document.createElement('div');
+        const time = new Date(h.time).toLocaleString('pt-BR');
+        right.innerHTML = `<div class="meta">${time}</div><div style="margin-top:6px" class="controls"><button class="btn small" data-i="${i}">Reouvir</button> <button class="btn secondary small" data-delete="${i}">Apagar</button></div>`;
+        div.appendChild(left); div.appendChild(right);
+        historyEl.appendChild(div);
+      });
+
+      // attach listeners for history buttons
+      historyEl.querySelectorAll('button[data-i]').forEach(b=>{
+        b.addEventListener('click',()=>{
+          const i = Number(b.getAttribute('data-i'));
+          const h = history[i];
+          const s = `Registro: estou me sentindo ${h.label} porque ${h.reason || 'não informado'}`;
+          speak(s);
+        });
+      });
+      historyEl.querySelectorAll('button[data-delete]').forEach(b=>{
+        b.addEventListener('click',()=>{
+          const i = Number(b.getAttribute('data-delete'));
+          history.splice(i,1); save('history',history); renderHistory();
+        });
+      });
+    }
+
+    // Export JSON
+    function exportData(){
+      const blob = new Blob([JSON.stringify({history, emotions}, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = 'comunicar_emocoes.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    // Add new emotion
+    document.getElementById('addForm').addEventListener('submit',(ev)=>{
+      ev.preventDefault();
+      const emoji = document.getElementById('newEmoji').value.trim() || '💬';
+      const label = document.getElementById('newLabel').value.trim() || 'Nova';
+      emotions.push({emoji, label});
+      save('emotions', emotions);
+      renderEmotions();
+      ev.target.reset();
+    });
+
+    // Events
+    document.getElementById('speakBtn').addEventListener('click', ()=>{ updateGenerated(); speak(generated.textContent); });
+    document.getElementById('saveBtn').addEventListener('click', saveEntry);
+    document.getElementById('exportBtn').addEventListener('click', exportData);
+    reasonInput.addEventListener('input', updateGenerated);
+
+    // Init
+    renderEmotions(); updateGenerated(); renderHistory();
+
+    // --- PWA: tenta registrar service worker ---
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/sw.js')
+        .then(()=>console.log('Service worker registrado'))
+        .catch((e)=>console.log('SW registro falhou', e));
+    }
+
+    // Accessibility: keyboard shortcut to focus reason input (R) and to speak (S)
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='r' || e.key==='R'){ reasonInput.focus(); }
+      if(e.key==='s' || e.key==='S'){ e.preventDefault(); speak(generated.textContent); }
+    });
+
+    // Warn about storage size politely
+    window.addEventListener('storage', ()=>{/* could sync across tabs */});
+  </script>
+
+  <!--
+    ==========================
+    MANIFEST (manifest.json)
+    Save this JSON as manifest.json next to the index.html file.
+    ==========================
+
+    {
+      "name": "Comunicar Emoções",
+      "short_name": "Emoções",
+      "start_url": "/",
+      "display": "standalone",
+      "background_color": "#f7fbff",
+      "theme_color": "#2b7cff",
+      "icons": [
+        { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+      ]
+    }
+
+    ==========================
+    SERVICE WORKER (sw.js)
+    Save this JS as sw.js at the site root. For production, customize caching rules.
+    ==========================
+
+    const CACHE_NAME = 'comunicar-v1';
+    const FILES_TO_CACHE = [
+      '/', '/index.html', '/manifest.json'
+      // adicione os recursos essenciais (CSS, ícones) aqui
+    ];
+
+    self.addEventListener('install', (evt) => {
+      evt.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
+      );
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', (evt) => {
+      evt.waitUntil(
+        caches.keys().then((keys) => Promise.all(
+          keys.map((k) => { if(k !== CACHE_NAME) return caches.delete(k); })
+        ))
+      );
+      self.clients.claim();
+    });
+
+    self.addEventListener('fetch', (evt) => {
+      if(evt.request.method !== 'GET') return;
+      evt.respondWith(
+        caches.match(evt.request).then((res) => res || fetch(evt.request))
+      );
+    });
+
+    Notes:
+    - To enable PWA install prompt, host the files on HTTPS (or localhost).
+    - Provide icons at the paths defined in manifest.json.
+    - Test with Chrome/Edge devtools (Application > Manifest/Service Workers).
+
+  -->
 </body>
 </html>
